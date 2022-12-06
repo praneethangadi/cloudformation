@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create an EC2 instance using AWS CloudFormation
+Resources:
+  SecurityGroupDemoSvrTraffic:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: sgDemo
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+        Description: For traffic from Internet
+      GroupDescription: Security Group for demo server
+      VpcId: vpc-06c80bde1d52edfa7
+  EC2InstanceDemoSvr:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1a
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          DeleteOnTermination: 'true'
+          VolumeSize: '8'
+          VolumeType: gp2
+      ImageId: ami-0b0dcb5067f052a63
+
+      InstanceType: t2.micro
+      
+      NetworkInterfaces:
+      - Description: Primary network interface
+        DeviceIndex: '0'
+        SubnetId: subnet-07d887f96503f14ec
+        PrivateIpAddress: 172.31.1.169	
+        GroupSet:
+        - Ref: SecurityGroupDemoSvrTraffic

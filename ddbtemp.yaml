@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Template To Create a DynamoDB
+Parameters:
+  elementname:
+    Type : String
+    Default : EmployeeId
+  elementtype:
+    Type : String
+    Default : S
+Resources:
+  EmployeeTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Employee
+      AttributeDefinitions: 
+        -
+          AttributeName: !Ref elementname
+          AttributeType: !Ref elementtype
+      KeySchema:
+        -
+          AttributeName: EmployeeId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+
